@@ -1,0 +1,38 @@
+[build]
+  command = "npm run build"
+  publish = "build"
+  functions = "functions"
+
+# Redirect all routes to index.html for client-side routing
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Set security headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "no-referrer-when-downgrade"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://placeholder.com https://via.placeholder.com; connect-src 'self'"
+
+# Environment variables
+[context.production.environment]
+  REACT_APP_API_URL = "https://api.accidentalteacher.com"
+  REACT_APP_ENV = "production"
+
+[context.deploy-preview.environment]
+  REACT_APP_API_URL = "https://staging-api.accidentalteacher.com"
+  REACT_APP_ENV = "staging"
+
+[context.branch-deploy.environment]
+  REACT_APP_API_URL = "https://dev-api.accidentalteacher.com"
+  REACT_APP_ENV = "development"
+
+# Serverless functions configuration
+[functions]
+  directory = "functions"
+  node_bundler = "esbuild"
