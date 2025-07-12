@@ -17,30 +17,97 @@ import {
   FiBell,
   FiActivity
 } from 'react-icons/fi';
-import { dashboardService } from '../services/dashboardService';
 import './Dashboard.css';
+
+// Mock data - you can update this with your actual data
+const mockDashboardData = {
+  overview: {
+    totalFollowers: 15420,
+    totalPosts: 89,
+    engagement: 4.2,
+    reach: 28560
+  },
+  upcomingPosts: [
+    {
+      id: 1,
+      title: "Teaching Math with Fun Games",
+      platform: "instagram",
+      scheduledTime: "2025-07-13T10:00:00Z",
+      status: "scheduled",
+      engagement: { likes: 0, comments: 0, shares: 0 }
+    },
+    {
+      id: 2,
+      title: "Science Experiment Friday",
+      platform: "facebook",
+      scheduledTime: "2025-07-13T14:30:00Z",
+      status: "scheduled",
+      engagement: { likes: 0, comments: 0, shares: 0 }
+    },
+    {
+      id: 3,
+      title: "Classroom Management Tips",
+      platform: "twitter",
+      scheduledTime: "2025-07-14T09:15:00Z",
+      status: "draft",
+      engagement: { likes: 0, comments: 0, shares: 0 }
+    }
+  ],
+  recentPerformance: [
+    {
+      id: 1,
+      title: "Creative Writing Prompts",
+      platform: "instagram",
+      publishedAt: "2025-07-11T08:00:00Z",
+      engagement: { likes: 245, comments: 18, shares: 12 }
+    },
+    {
+      id: 2,
+      title: "Reading Comprehension Strategies",
+      platform: "facebook",
+      publishedAt: "2025-07-10T16:00:00Z",
+      engagement: { likes: 189, comments: 24, shares: 8 }
+    },
+    {
+      id: 3,
+      title: "Quick Math Facts Practice",
+      platform: "twitter",
+      publishedAt: "2025-07-09T12:30:00Z",
+      engagement: { likes: 156, comments: 9, shares: 15 }
+    }
+  ],
+  contentIdeas: [
+    {
+      id: 1,
+      title: "5 Quick Reading Games",
+      contentPillar: "Literacy",
+      platforms: ["instagram", "facebook"],
+      confidence: "high"
+    },
+    {
+      id: 2,
+      title: "Math Facts with Music",
+      contentPillar: "Mathematics",
+      platforms: ["twitter", "youtube"],
+      confidence: "medium"
+    }
+  ]
+};
 
 const Dashboard = () => {
   const [dashboardData, setDashboardData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchDashboardData = async () => {
-      try {
-        setIsLoading(true);
-        const data = await dashboardService.getDashboardData();
-        setDashboardData(data);
-        setError(null);
-      } catch (err) {
-        setError('Failed to load dashboard data');
-        console.error('Dashboard error:', err);
-      } finally {
+    // Simulate loading
+    const loadData = () => {
+      setTimeout(() => {
+        setDashboardData(mockDashboardData);
         setIsLoading(false);
-      }
+      }, 500);
     };
 
-    fetchDashboardData();
+    loadData();
   }, []);
 
   const getPlatformIcon = (platform) => {
@@ -81,21 +148,10 @@ const Dashboard = () => {
     );
   }
 
-  if (error) {
-    return (
-      <div className="dashboard-error">
-        <p>{error}</p>
-        <button 
-          onClick={() => window.location.reload()} 
-          className="btn btn-primary"
-        >
-          Retry
-        </button>
-      </div>
-    );
-  }
-
-  const { stats, upcomingPosts, recentPerformance, contentIdeas } = dashboardData;
+  const stats = dashboardData?.overview || {};
+  const upcomingPosts = dashboardData?.upcomingPosts || [];
+  const recentPerformance = dashboardData?.recentPerformance || [];
+  const contentIdeas = dashboardData?.contentIdeas || [];
 
   return (
     <div className="dashboard">

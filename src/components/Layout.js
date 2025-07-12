@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
-import { useAuth } from '../context/AuthContext';
 import { 
   FiHome, 
   FiCalendar, 
   FiEdit3, 
   FiBarChart2, 
-  FiSettings, 
-  FiLogOut,
+  FiSettings,
   FiMenu,
   FiX,
   FiBell,
@@ -15,12 +13,7 @@ import {
 import './Layout.css';
 
 const Layout = ({ children }) => {
-  const { user, logout } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  const handleLogout = () => {
-    logout();
-  };
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -80,14 +73,10 @@ const Layout = ({ children }) => {
               <FiUser />
             </div>
             <div className="user-details">
-              <span className="user-name">{user?.name || 'User'}</span>
-              <span className="user-role">{user?.role || 'Admin'}</span>
+              <span className="user-name">Scott</span>
+              <span className="user-role">Content Creator</span>
             </div>
           </div>
-          <button className="logout-btn" onClick={handleLogout}>
-            <FiLogOut />
-            <span>Logout</span>
-          </button>
         </div>
       </aside>
 
@@ -117,7 +106,7 @@ const Layout = ({ children }) => {
               <div className="user-avatar">
                 <FiUser />
               </div>
-              <span className="user-name">{user?.name || 'User'}</span>
+              <span className="user-name">Scott</span>
             </div>
           </div>
         </header>

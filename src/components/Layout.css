@@ -190,28 +190,6 @@
   line-height: 1;
 }
 
-.logout-btn {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-xs);
-  width: 100%;
-  padding: var(--spacing-sm);
-  background: rgba(237, 28, 36, 0.2);
-  border: 1px solid rgba(237, 28, 36, 0.3);
-  border-radius: var(--radius-md);
-  color: var(--color-white);
-  font-family: var(--font-heading);
-  font-weight: 500;
-  font-size: 0.875rem;
-  cursor: pointer;
-  transition: all var(--transition-fast);
-}
-
-.logout-btn:hover {
-  background: rgba(237, 28, 36, 0.3);
-  border-color: rgba(237, 28, 36, 0.5);
-}
-
 /* Sidebar Overlay */
 .sidebar-overlay {
   position: fixed;
