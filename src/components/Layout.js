@@ -39,7 +39,7 @@ const Layout = ({ children }) => {
         <div className="sidebar-header">
           <div className="brand">
             <div className="brand-icon">
-              <span className="brand-emoji">👨‍🏫</span>
+              <img src="/logo.png" alt="The Accidental Teacher" className="brand-logo" />
             </div>
             <div className="brand-text">
               <h3>The Accidental</h3>

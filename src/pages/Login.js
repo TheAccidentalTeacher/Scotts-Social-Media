@@ -70,13 +70,6 @@ const Login = () => {
     }
   };
 
-  const handleDemoLogin = () => {
-    setFormData({
-      email: 'admin@accidentalteacher.com',
-      password: 'password'
-    });
-  };
-
   return (
     <div className="login-container">
       <div className="login-background">
@@ -169,23 +162,9 @@ const Login = () => {
           </form>
 
           <div className="login-footer">
-            <div className="demo-section">
-              <p className="demo-text">Want to try the demo?</p>
-              <button
-                type="button"
-                onClick={handleDemoLogin}
-                className="btn btn-outline demo-btn"
-                disabled={isLoading}
-              >
-                Use Demo Credentials
-              </button>
-            </div>
-            
-            <div className="demo-credentials">
-              <p><strong>Demo Account:</strong></p>
-              <p>Email: admin@accidentalteacher.com</p>
-              <p>Password: password</p>
-            </div>
+            <p className="signup-text">
+              Need help getting started? Contact support for assistance setting up your account.
+            </p>
           </div>
         </div>
 

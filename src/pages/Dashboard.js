@@ -17,104 +17,30 @@ import {
   FiBell,
   FiActivity
 } from 'react-icons/fi';
+import { dashboardService } from '../services/dashboardService';
 import './Dashboard.css';
-
-// Mock data - you can update this with your actual data
-const mockDashboardData = {
-  overview: {
-    followers: 15420,
-    posts: 89,
-    engagement: 4.2,
-    reach: 28560,
-    growth: 12.3
-  },
-  upcomingPosts: [
-    {
-      id: 1,
-      title: "Teaching Math with Fun Games",
-      platform: "instagram",
-      scheduledFor: "2025-07-13T10:00:00Z",
-      status: "scheduled"
-    },
-    {
-      id: 2,
-      title: "Science Experiment Friday",
-      platform: "facebook",
-      scheduledFor: "2025-07-13T14:30:00Z",
-      status: "scheduled"
-    },
-    {
-      id: 3,
-      title: "Classroom Management Tips",
-      platform: "twitter",
-      scheduledFor: "2025-07-14T09:15:00Z",
-      status: "draft"
-    }
-  ],
-  recentPerformance: [
-    {
-      id: 1,
-      title: "Creative Writing Prompts",
-      platform: "instagram",
-      publishedAt: "2025-07-11T08:00:00Z",
-      engagement: 8.2,
-      likes: 245,
-      comments: 18,
-      shares: 12
-    },
-    {
-      id: 2,
-      title: "Reading Comprehension Strategies",
-      platform: "facebook",
-      publishedAt: "2025-07-10T16:00:00Z",
-      engagement: 6.4,
-      likes: 189,
-      comments: 24,
-      shares: 8
-    },
-    {
-      id: 3,
-      title: "Quick Math Facts Practice",
-      platform: "twitter",
-      publishedAt: "2025-07-09T12:30:00Z",
-      engagement: 7.1,
-      likes: 156,
-      comments: 9,
-      shares: 15
-    }
-  ],
-  contentIdeas: [
-    {
-      id: 1,
-      title: "5 Quick Reading Games",
-      contentPillar: "Literacy",
-      platforms: ["instagram", "facebook"],
-      confidence: "high"
-    },
-    {
-      id: 2,
-      title: "Math Facts with Music",
-      contentPillar: "Mathematics",
-      platforms: ["twitter", "youtube"],
-      confidence: "medium"
-    }
-  ]
-};
 
 const Dashboard = () => {
   const [dashboardData, setDashboardData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Simulate loading
-    const loadData = () => {
-      setTimeout(() => {
-        setDashboardData(mockDashboardData);
+    const loadDashboardData = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        const data = await dashboardService.getDashboardData();
+        setDashboardData(data);
+      } catch (err) {
+        console.error('Failed to load dashboard data:', err);
+        setError('Failed to load dashboard data. Please try again.');
+      } finally {
         setIsLoading(false);
-      }, 500);
+      }
     };
 
-    loadData();
+    loadDashboardData();
   }, []);
 
   const getPlatformIcon = (platform) => {
@@ -155,11 +81,29 @@ const Dashboard = () => {
     );
   }
 
-  const stats = dashboardData?.overview || {
+  if (error) {
+    return (
+      <div className="dashboard-error">
+        <div className="error-icon">
+          <FiBell />
+        </div>
+        <h2>Unable to Load Dashboard</h2>
+        <p>{error}</p>
+        <button 
+          className="btn btn-primary"
+          onClick={() => window.location.reload()}
+        >
+          Try Again
+        </button>
+      </div>
+    );
+  }
+
+  // Handle the API response format (stats instead of overview)
+  const stats = dashboardData?.stats || {
     followers: 0,
     posts: 0,
     engagement: 0,
-    reach: 0,
     growth: 0
   };
   const upcomingPosts = dashboardData?.upcomingPosts || [];
@@ -255,32 +199,43 @@ const Dashboard = () => {
             <button className="btn btn-sm btn-outline">View All</button>
           </div>
           <div className="upcoming-posts">
-            {upcomingPosts.map((post) => {
-              const PlatformIcon = getPlatformIcon(post.platform);
-              return (
-                <div key={post.id} className="post-item">
-                  <div className="post-icon">
-                    <PlatformIcon />
-                  </div>
-                  <div className="post-content">
-                    <h4>{post.title}</h4>
-                    <div className="post-meta">
-                      <span className={`status-badge ${getStatusColor(post.status)}`}>
-                        {post.status}
-                      </span>
-                      <span className="post-time">
-                        {formatDate(post.scheduledFor)}
-                      </span>
+            {upcomingPosts.length > 0 ? (
+              upcomingPosts.map((post) => {
+                const PlatformIcon = getPlatformIcon(post.platform);
+                return (
+                  <div key={post.id} className="post-item">
+                    <div className="post-icon">
+                      <PlatformIcon />
+                    </div>
+                    <div className="post-content">
+                      <h4>{post.title}</h4>
+                      <div className="post-meta">
+                        <span className={`status-badge ${getStatusColor(post.status)}`}>
+                          {post.status}
+                        </span>
+                        <span className="post-time">
+                          {formatDate(post.scheduledFor)}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="post-actions">
+                      <button className="btn btn-sm btn-outline">
+                        <FiEdit3 />
+                      </button>
                     </div>
                   </div>
-                  <div className="post-actions">
-                    <button className="btn btn-sm btn-outline">
-                      <FiEdit3 />
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
+                );
+              })
+            ) : (
+              <div className="empty-state">
+                <FiClock />
+                <p>No upcoming posts scheduled</p>
+                <button className="btn btn-primary">
+                  <FiEdit3 />
+                  Create Your First Post
+                </button>
+              </div>
+            )}
           </div>
         </div>
 
@@ -294,41 +249,51 @@ const Dashboard = () => {
             <button className="btn btn-sm btn-outline">View Analytics</button>
           </div>
           <div className="performance-list">
-            {recentPerformance.map((item) => {
-              const PlatformIcon = getPlatformIcon(item.platform);
-              return (
-                <div key={item.id} className="performance-item">
-                  <div className="performance-header">
-                    <div className="performance-icon">
-                      <PlatformIcon />
+            {recentPerformance.length > 0 ? (
+              recentPerformance.map((item) => {
+                const PlatformIcon = getPlatformIcon(item.platform);
+                return (
+                  <div key={item.id} className="performance-item">
+                    <div className="performance-header">
+                      <div className="performance-icon">
+                        <PlatformIcon />
+                      </div>
+                      <div className="performance-info">
+                        <h4>{item.title}</h4>
+                        <span className="performance-date">
+                          {formatDate(item.publishedAt)}
+                        </span>
+                      </div>
+                      <div className="engagement-score">
+                        {item.engagement}%
+                      </div>
                     </div>
-                    <div className="performance-info">
-                      <h4>{item.title}</h4>
-                      <span className="performance-date">
-                        {formatDate(item.publishedAt)}
-                      </span>
-                    </div>
-                    <div className="engagement-score">
-                      {item.engagement}%
+                    <div className="performance-metrics">
+                      <div className="metric">
+                        <FiHeart />
+                        <span>{item.likes}</span>
+                      </div>
+                      <div className="metric">
+                        <FiMessageCircle />
+                        <span>{item.comments}</span>
+                      </div>
+                      <div className="metric">
+                        <FiShare2 />
+                        <span>{item.shares}</span>
+                      </div>
                     </div>
                   </div>
-                  <div className="performance-metrics">
-                    <div className="metric">
-                      <FiHeart />
-                      <span>{item.likes}</span>
-                    </div>
-                    <div className="metric">
-                      <FiMessageCircle />
-                      <span>{item.comments}</span>
-                    </div>
-                    <div className="metric">
-                      <FiShare2 />
-                      <span>{item.shares}</span>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+                );
+              })
+            ) : (
+              <div className="empty-state">
+                <FiBarChart2 />
+                <p>No performance data yet</p>
+                <p className="empty-state-subtitle">
+                  Publish some content to see analytics here
+                </p>
+              </div>
+            )}
           </div>
         </div>
 
@@ -342,32 +307,42 @@ const Dashboard = () => {
             <button className="btn btn-sm btn-primary">Generate More</button>
           </div>
           <div className="content-ideas">
-            {contentIdeas.map((idea) => (
-              <div key={idea.id} className="idea-item">
-                <div className="idea-content">
-                  <h4>{idea.title}</h4>
-                  <span className="idea-pillar">{idea.contentPillar}</span>
-                  <div className="idea-platforms">
-                    {idea.platforms.map((platform) => {
-                      const PlatformIcon = getPlatformIcon(platform);
-                      return (
-                        <div key={platform} className="platform-tag">
-                          <PlatformIcon />
-                        </div>
-                      );
-                    })}
+            {contentIdeas.length > 0 ? (
+              contentIdeas.map((idea) => (
+                <div key={idea.id} className="idea-item">
+                  <div className="idea-content">
+                    <h4>{idea.title}</h4>
+                    <span className="idea-pillar">{idea.contentPillar}</span>
+                    <div className="idea-platforms">
+                      {idea.platforms.map((platform) => {
+                        const PlatformIcon = getPlatformIcon(platform);
+                        return (
+                          <div key={platform} className="platform-tag">
+                            <PlatformIcon />
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                  <div className="idea-actions">
+                    <div className={`confidence-badge ${idea.confidence}`}>
+                      {idea.confidence} confidence
+                    </div>
+                    <button className="btn btn-sm btn-primary">
+                      Create
+                    </button>
                   </div>
                 </div>
-                <div className="idea-actions">
-                  <div className={`confidence-badge ${idea.confidence}`}>
-                    {idea.confidence} confidence
-                  </div>
-                  <button className="btn btn-sm btn-primary">
-                    Create
-                  </button>
-                </div>
+              ))
+            ) : (
+              <div className="empty-state">
+                <FiBell />
+                <p>No content ideas yet</p>
+                <button className="btn btn-primary">
+                  Generate AI Ideas
+                </button>
               </div>
-            ))}
+            )}
           </div>
         </div>
 
