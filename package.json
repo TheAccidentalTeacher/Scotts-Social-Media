@@ -2,6 +2,7 @@
   "name": "the-accidental-teacher",
   "version": "1.0.0",
   "description": "Social Media Empire for The Accidental Teacher",
+  "homepage": ".",
   "private": true,
   "dependencies": {
     "react": "^18.2.0",
