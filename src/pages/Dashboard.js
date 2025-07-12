@@ -33,25 +33,22 @@ const mockDashboardData = {
       id: 1,
       title: "Teaching Math with Fun Games",
       platform: "instagram",
-      scheduledTime: "2025-07-13T10:00:00Z",
-      status: "scheduled",
-      engagement: { likes: 0, comments: 0, shares: 0 }
+      scheduledFor: "2025-07-13T10:00:00Z",
+      status: "scheduled"
     },
     {
       id: 2,
       title: "Science Experiment Friday",
       platform: "facebook",
-      scheduledTime: "2025-07-13T14:30:00Z",
-      status: "scheduled",
-      engagement: { likes: 0, comments: 0, shares: 0 }
+      scheduledFor: "2025-07-13T14:30:00Z",
+      status: "scheduled"
     },
     {
       id: 3,
       title: "Classroom Management Tips",
       platform: "twitter",
-      scheduledTime: "2025-07-14T09:15:00Z",
-      status: "draft",
-      engagement: { likes: 0, comments: 0, shares: 0 }
+      scheduledFor: "2025-07-14T09:15:00Z",
+      status: "draft"
     }
   ],
   recentPerformance: [
@@ -60,21 +57,30 @@ const mockDashboardData = {
       title: "Creative Writing Prompts",
       platform: "instagram",
       publishedAt: "2025-07-11T08:00:00Z",
-      engagement: { likes: 245, comments: 18, shares: 12 }
+      engagement: 8.2,
+      likes: 245,
+      comments: 18,
+      shares: 12
     },
     {
       id: 2,
       title: "Reading Comprehension Strategies",
       platform: "facebook",
       publishedAt: "2025-07-10T16:00:00Z",
-      engagement: { likes: 189, comments: 24, shares: 8 }
+      engagement: 6.4,
+      likes: 189,
+      comments: 24,
+      shares: 8
     },
     {
       id: 3,
       title: "Quick Math Facts Practice",
       platform: "twitter",
       publishedAt: "2025-07-09T12:30:00Z",
-      engagement: { likes: 156, comments: 9, shares: 15 }
+      engagement: 7.1,
+      likes: 156,
+      comments: 9,
+      shares: 15
     }
   ],
   contentIdeas: [
