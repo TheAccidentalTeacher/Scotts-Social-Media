@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { 
   FiHome, 
   FiCalendar, 
@@ -38,7 +39,7 @@ const Layout = ({ children }) => {
         <div className="sidebar-header">
           <div className="brand">
             <div className="brand-icon">
-              <img src="/logo.png" alt="The Accidental Teacher Logo" className="brand-logo" />
+              <span className="brand-emoji">👨‍🏫</span>
             </div>
             <div className="brand-text">
               <h3>The Accidental</h3>
@@ -54,14 +55,14 @@ const Layout = ({ children }) => {
           <ul className="nav-list">
             {navigationItems.map((item, index) => (
               <li key={index} className="nav-item">
-                <a 
-                  href={item.path} 
+                <Link 
+                  to={item.path} 
                   className={`nav-link ${item.active ? 'active' : ''}`}
                   onClick={closeSidebar}
                 >
                   <item.icon className="nav-icon" />
                   <span className="nav-label">{item.label}</span>
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
@@ -93,10 +94,7 @@ const Layout = ({ children }) => {
             <button className="menu-toggle" onClick={toggleSidebar}>
               <FiMenu />
             </button>
-            <div className="header-brand">
-              <img src="/logo.png" alt="The Accidental Teacher" className="header-logo" />
-              <h1 className="page-title">Dashboard</h1>
-            </div>
+            <h1 className="page-title">Dashboard</h1>
           </div>
           
           <div className="header-right">
