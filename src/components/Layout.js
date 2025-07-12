@@ -11,7 +11,6 @@ import {
   FiUser
 } from 'react-icons/fi';
 import './Layout.css';
-import logo from '../assets/logo.png';
 
 const Layout = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -39,7 +38,7 @@ const Layout = ({ children }) => {
         <div className="sidebar-header">
           <div className="brand">
             <div className="brand-icon">
-              <img src={logo} alt="The Accidental Teacher Logo" className="brand-logo" />
+              <img src="/logo.png" alt="The Accidental Teacher Logo" className="brand-logo" />
             </div>
             <div className="brand-text">
               <h3>The Accidental</h3>
@@ -95,7 +94,7 @@ const Layout = ({ children }) => {
               <FiMenu />
             </button>
             <div className="header-brand">
-              <img src={logo} alt="The Accidental Teacher" className="header-logo" />
+              <img src="/logo.png" alt="The Accidental Teacher" className="header-logo" />
               <h1 className="page-title">Dashboard</h1>
             </div>
           </div>
