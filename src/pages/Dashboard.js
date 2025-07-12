@@ -22,10 +22,11 @@ import './Dashboard.css';
 // Mock data - you can update this with your actual data
 const mockDashboardData = {
   overview: {
-    totalFollowers: 15420,
-    totalPosts: 89,
+    followers: 15420,
+    posts: 89,
     engagement: 4.2,
-    reach: 28560
+    reach: 28560,
+    growth: 12.3
   },
   upcomingPosts: [
     {
@@ -148,7 +149,13 @@ const Dashboard = () => {
     );
   }
 
-  const stats = dashboardData?.overview || {};
+  const stats = dashboardData?.overview || {
+    followers: 0,
+    posts: 0,
+    engagement: 0,
+    reach: 0,
+    growth: 0
+  };
   const upcomingPosts = dashboardData?.upcomingPosts || [];
   const recentPerformance = dashboardData?.recentPerformance || [];
   const contentIdeas = dashboardData?.contentIdeas || [];
