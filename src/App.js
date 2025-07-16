@@ -1,8 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider, useAuth } from './context/AuthContext';
 import Layout from './components/Layout';
-import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Calendar from './pages/Calendar';
 import Creator from './pages/Creator';
@@ -42,96 +40,59 @@ class ErrorBoundary extends React.Component {
   }
 }
 
-// Protected Route component
-const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated, isLoading } = useAuth();
-  
-  if (isLoading) {
-    return (
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'center', 
-        alignItems: 'center', 
-        height: '100vh',
-        fontSize: '18px'
-      }}>
-        Loading...
-      </div>
-    );
-  }
-  
-  return isAuthenticated ? children : <Navigate to="/login" replace />;
-};
+// No longer need ProtectedRoute or authentication
 
-// App Routes component
+// App Routes component (all public)
 const AppRoutes = () => {
-  const { isAuthenticated } = useAuth();
-  
   return (
     <Routes>
       <Route 
-        path="/login" 
-        element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <Login />} 
+        path="/"
+        element={
+          <Layout>
+            <Dashboard />
+          </Layout>
+        }
       />
       <Route 
-        path="/" 
+        path="/dashboard"
         element={
-          <ProtectedRoute>
-            <Layout>
-              <Dashboard />
-            </Layout>
-          </ProtectedRoute>
-        } 
+          <Layout>
+            <Dashboard />
+          </Layout>
+        }
       />
       <Route 
-        path="/dashboard" 
+        path="/calendar"
         element={
-          <ProtectedRoute>
-            <Layout>
-              <Dashboard />
-            </Layout>
-          </ProtectedRoute>
-        } 
+          <Layout>
+            <Calendar />
+          </Layout>
+        }
       />
       <Route 
-        path="/calendar" 
+        path="/creator"
         element={
-          <ProtectedRoute>
-            <Layout>
-              <Calendar />
-            </Layout>
-          </ProtectedRoute>
-        } 
+          <Layout>
+            <Creator />
+          </Layout>
+        }
       />
       <Route 
-        path="/creator" 
+        path="/analytics"
         element={
-          <ProtectedRoute>
-            <Layout>
-              <Creator />
-            </Layout>
-          </ProtectedRoute>
-        } 
+          <Layout>
+            <Analytics />
+          </Layout>
+        }
       />
       <Route 
-        path="/analytics" 
+        path="/settings"
         element={
-          <ProtectedRoute>
-            <Layout>
-              <Analytics />
-            </Layout>
-          </ProtectedRoute>
-        } 
-      />
-      <Route 
-        path="/settings" 
-        element={
-          <ProtectedRoute>
-            <Layout>
-              <Settings />
-            </Layout>
-          </ProtectedRoute>
-        } 
+          <Layout>
+            <Settings />
+          </Layout>
+        }
       />
       <Route path="*" element={<NotFound />} />
     </Routes>
@@ -141,13 +102,11 @@ const AppRoutes = () => {
 function App() {
   return (
     <ErrorBoundary>
-      <AuthProvider>
-        <Router>
-          <div className="App">
-            <AppRoutes />
-          </div>
-        </Router>
-      </AuthProvider>
+      <Router>
+        <div className="App">
+          <AppRoutes />
+        </div>
+      </Router>
     </ErrorBoundary>
   );
 }
