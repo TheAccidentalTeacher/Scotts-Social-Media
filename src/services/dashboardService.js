@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create axios instance with default config
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || '',
+  baseURL: process.env.REACT_APP_API_URL || '/.netlify/functions',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json'
@@ -27,7 +27,7 @@ export const dashboardService = {
   // Get dashboard overview data
   getDashboardData: async () => {
     try {
-      const response = await api.get('/api/dashboard');
+      const response = await api.get('/dashboard');
       return response.data;
     } catch (error) {
       console.error('Failed to fetch dashboard data:', error);
@@ -38,7 +38,7 @@ export const dashboardService = {
   // Get health check
   getHealthCheck: async () => {
     try {
-      const response = await api.get('/api/health');
+      const response = await api.get('/health');
       return response.data;
     } catch (error) {
       console.error('Health check failed:', error);

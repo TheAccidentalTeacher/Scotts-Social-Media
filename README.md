@@ -14,10 +14,12 @@ A comprehensive, AI-powered social media marketing application for "The Accident
 ## 🛠️ Tech Stack
 
 - **Frontend**: React.js with React Router
+- **Backend**: Netlify Functions (Serverless)
+- **Hosting**: Netlify
 - **State Management**: React Context API
 - **Styling**: Custom CSS with variables for theming
 - **API Integration**: Axios for API requests
-- **Authentication**: JWT-based authentication
+- **Authentication**: JWT-based authentication (ready for implementation)
 - **Data Visualization**: Chart.js with react-chartjs-2
 - **Form Handling**: Formik with Yup validation
 
@@ -41,12 +43,13 @@ A comprehensive, AI-powered social media marketing application for "The Accident
 └── package.json            # Project dependencies
 ```
 
-## 🏁 Getting Started
+## 🚀 Getting Started
 
 ### Prerequisites
 
-- Node.js (v14 or higher)
+- Node.js (v18 or higher)
 - npm or yarn
+- Netlify CLI (for local development with functions)
 
 ### Installation
 
@@ -59,18 +62,37 @@ A comprehensive, AI-powered social media marketing application for "The Accident
 2. Install dependencies:
    ```bash
    npm install
-   # or
-   yarn install
    ```
 
-3. Start the development server:
+3. Install Netlify CLI globally (if not already installed):
    ```bash
-   npm start
-   # or
-   yarn start
+   npm install -g netlify-cli
    ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser
+4. Start the development server with Netlify Functions:
+   ```bash
+   npm run netlify
+   # or
+   netlify dev
+   ```
+
+5. Open [http://localhost:8888](http://localhost:8888) in your browser
+
+### Alternative Development (React Only)
+
+For frontend-only development without functions:
+```bash
+npm start
+```
+This runs only the React app on [http://localhost:3000](http://localhost:3000)
+
+### Production Build
+
+```bash
+npm run build
+```
+
+This creates an optimized production build in the `build/` directory, ready for Netlify deployment.
 
 ### Demo Credentials
 
