@@ -26,15 +26,12 @@
 
 # Environment variables
 [context.production.environment]
-  REACT_APP_API_URL = "https://api.accidentalteacher.com"
   REACT_APP_ENV = "production"
 
 [context.deploy-preview.environment]
-  REACT_APP_API_URL = "https://staging-api.accidentalteacher.com"
   REACT_APP_ENV = "staging"
 
 [context.branch-deploy.environment]
-  REACT_APP_API_URL = "https://dev-api.accidentalteacher.com"
   REACT_APP_ENV = "development"
 
 # Serverless functions configuration

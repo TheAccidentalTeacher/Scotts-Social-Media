@@ -7,6 +7,8 @@ exports.handler = async (event, context) => {
     'Content-Type': 'application/json'
   };
 
+  console.log('Dashboard function called:', event.httpMethod);
+
   // Handle preflight requests
   if (event.httpMethod === 'OPTIONS') {
     return {
