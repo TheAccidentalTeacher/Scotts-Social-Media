@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
 import Calendar from './pages/Calendar';
@@ -7,6 +8,7 @@ import Creator from './pages/Creator';
 import Analytics from './pages/Analytics';
 import Settings from './pages/Settings';
 import NotFound from './pages/NotFound';
+import 'react-toastify/dist/ReactToastify.css';
 
 // Error Boundary Component
 class ErrorBoundary extends React.Component {
@@ -105,6 +107,17 @@ function App() {
       <Router>
         <div className="App">
           <AppRoutes />
+          <ToastContainer
+            position="top-right"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+          />
         </div>
       </Router>
     </ErrorBoundary>
