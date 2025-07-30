@@ -8,6 +8,7 @@ import Creator from './pages/Creator';
 import Analytics from './pages/Analytics';
 import Settings from './pages/Settings';
 import Connections from './pages/Connections';
+import FacebookInstagramSetup from './pages/FacebookInstagramSetup';
 import NotFound from './pages/NotFound';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -94,6 +95,14 @@ const AppRoutes = () => {
         element={
           <Layout>
             <Connections />
+          </Layout>
+        }
+      />
+      <Route 
+        path="/setup/facebook-instagram"
+        element={
+          <Layout>
+            <FacebookInstagramSetup />
           </Layout>
         }
       />

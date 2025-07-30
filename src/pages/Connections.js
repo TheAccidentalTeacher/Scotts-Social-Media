@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { 
   FiInstagram,
   FiFacebook,
@@ -20,6 +21,7 @@ import { toast } from 'react-toastify';
 import './Connections.css';
 
 const Connections = () => {
+  const navigate = useNavigate();
   const [connections, setConnections] = useState({
     instagram: { connected: false, username: '', followers: 0, lastSync: null },
     facebook: { connected: false, pageName: '', followers: 0, lastSync: null },
@@ -101,6 +103,12 @@ const Connections = () => {
   ];
 
   const handleConnect = async (platformId) => {
+    // For Facebook and Instagram, redirect to dedicated setup page
+    if (platformId === 'facebook' || platformId === 'instagram') {
+      navigate('/setup/facebook-instagram');
+      return;
+    }
+
     setIsConnecting(prev => ({ ...prev, [platformId]: true }));
     
     try {
@@ -279,10 +287,20 @@ const Connections = () => {
                 )}
               </button>
               
-              <button className="btn btn-secondary">
-                <FiSettings />
-                Setup Guide
-              </button>
+              {(platform.id === 'facebook' || platform.id === 'instagram') ? (
+                <Link 
+                  to="/setup/facebook-instagram" 
+                  className="btn btn-secondary"
+                >
+                  <FiSettings />
+                  Setup Guide
+                </Link>
+              ) : (
+                <button className="btn btn-secondary">
+                  <FiSettings />
+                  Setup Guide
+                </button>
+              )}
             </div>
           </div>
         )}
