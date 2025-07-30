@@ -9,7 +9,8 @@ import {
   FiMenu,
   FiX,
   FiBell,
-  FiUser
+  FiUser,
+  FiLink
 } from 'react-icons/fi';
 import './Layout.css';
 
@@ -29,6 +30,7 @@ const Layout = ({ children }) => {
     { icon: FiCalendar, label: 'Content Calendar', path: '/calendar' },
     { icon: FiEdit3, label: 'Content Creator', path: '/creator' },
     { icon: FiBarChart2, label: 'Analytics', path: '/analytics' },
+    { icon: FiLink, label: 'Connections', path: '/connections' },
     { icon: FiSettings, label: 'Settings', path: '/settings' },
   ];
 

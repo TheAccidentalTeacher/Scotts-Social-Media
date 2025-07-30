@@ -9,11 +9,37 @@ import {
   FiEdit3,
   FiPlus,
   FiActivity,
-  FiClock
+  FiClock,
+  FiTwitter,
+  FiYoutube,
+  FiLink
 } from 'react-icons/fi';
+import { 
+  SiTiktok,
+  SiPinterest,
+  SiLinkedin
+} from 'react-icons/si';
+import { Link } from 'react-router-dom';
 import './Dashboard.css';
 
 const Dashboard = () => {
+  // Mock platform data - replace with real data from connections
+  const platforms = [
+    { id: 'instagram', name: 'Instagram', icon: FiInstagram, color: '#E4405F', followers: 0, connected: false },
+    { id: 'facebook', name: 'Facebook', icon: FiFacebook, color: '#1877F2', followers: 0, connected: false },
+    { id: 'tiktok', name: 'TikTok', icon: SiTiktok, color: '#000000', followers: 0, connected: false },
+    { id: 'pinterest', name: 'Pinterest', icon: SiPinterest, color: '#BD081C', followers: 0, connected: false },
+    { id: 'twitter', name: 'X (Twitter)', icon: FiTwitter, color: '#1DA1F2', followers: 0, connected: false },
+    { id: 'youtube', name: 'YouTube', icon: FiYoutube, color: '#FF0000', subscribers: 0, connected: false },
+    { id: 'linkedin', name: 'LinkedIn', icon: SiLinkedin, color: '#0A66C2', connections: 0, connected: false },
+    { id: 'truthsocial', name: 'Truth Social', icon: FiTwitter, color: '#FF6B35', followers: 0, connected: false }
+  ];
+
+  const totalFollowers = platforms.reduce((sum, platform) => 
+    sum + (platform.followers || platform.subscribers || platform.connections || 0), 0
+  );
+
+  const connectedPlatforms = platforms.filter(p => p.connected).length;
   const StatCard = ({ icon: Icon, title, value, subtitle, color }) => (
     <div className="stat-card">
       <div className="stat-icon" style={{ backgroundColor: color }}>
@@ -23,6 +49,40 @@ const Dashboard = () => {
         <div className="stat-value">{value}</div>
         <div className="stat-title">{title}</div>
         {subtitle && <div className="stat-subtitle">{subtitle}</div>}
+      </div>
+    </div>
+  );
+
+  const PlatformGauge = ({ platform }) => (
+    <div className="platform-gauge">
+      <div className="gauge-header">
+        <div className="platform-icon" style={{ backgroundColor: platform.color }}>
+          <platform.icon />
+        </div>
+        <div className="platform-info">
+          <h4>{platform.name}</h4>
+          <span className={`status ${platform.connected ? 'connected' : 'disconnected'}`}>
+            {platform.connected ? 'Connected' : 'Not Connected'}
+          </span>
+        </div>
+      </div>
+      <div className="gauge-stats">
+        {platform.connected ? (
+          <>
+            <div className="stat-number">
+              {(platform.followers || platform.subscribers || platform.connections || 0).toLocaleString()}
+            </div>
+            <div className="stat-label">
+              {platform.id === 'youtube' ? 'Subscribers' : 
+               platform.id === 'linkedin' ? 'Connections' : 'Followers'}
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="stat-number">--</div>
+            <div className="stat-label">Connect to view</div>
+          </>
+        )}
       </div>
     </div>
   );
@@ -41,8 +101,8 @@ const Dashboard = () => {
         <StatCard
           icon={FiUsers}
           title="Total Followers"
-          value="0"
-          subtitle="Connect your accounts to see data"
+          value={totalFollowers.toLocaleString()}
+          subtitle={connectedPlatforms > 0 ? `Across ${connectedPlatforms} platforms` : "Connect your accounts to see data"}
           color="#3498db"
         />
         <StatCard
@@ -68,28 +128,44 @@ const Dashboard = () => {
         />
       </div>
 
+      {/* Platform Gauges */}
+      <div className="platform-section">
+        <div className="section-header">
+          <h2>Platform Overview</h2>
+          <Link to="/connections" className="btn btn-primary">
+            <FiLink />
+            Manage Connections
+          </Link>
+        </div>
+        <div className="platform-gauges">
+          {platforms.map(platform => (
+            <PlatformGauge key={platform.id} platform={platform} />
+          ))}
+        </div>
+      </div>
+
       {/* Main Content Grid */}
       <div className="dashboard-content">
         {/* Quick Actions */}
         <div className="quick-actions-card">
           <h2><FiEdit3 /> Quick Actions</h2>
           <div className="quick-actions">
-            <button className="action-btn primary">
+            <Link to="/creator" className="action-btn primary">
               <FiPlus />
               <span>Create Content</span>
-            </button>
-            <button className="action-btn secondary">
+            </Link>
+            <Link to="/connections" className="action-btn secondary">
               <FiInstagram />
               <span>Connect Instagram</span>
-            </button>
-            <button className="action-btn secondary">
+            </Link>
+            <Link to="/connections" className="action-btn secondary">
               <FiFacebook />
               <span>Connect Facebook</span>
-            </button>
-            <button className="action-btn secondary">
+            </Link>
+            <Link to="/analytics" className="action-btn secondary">
               <FiActivity />
               <span>View Analytics</span>
-            </button>
+            </Link>
           </div>
         </div>
 
@@ -102,9 +178,9 @@ const Dashboard = () => {
             <FiFileText size={48} />
             <h3>No scheduled posts</h3>
             <p>Create and schedule your first post to see it here!</p>
-            <button className="btn btn-primary">
+            <Link to="/creator" className="btn btn-primary">
               Create Your First Post
-            </button>
+            </Link>
           </div>
         </div>
 
@@ -117,9 +193,9 @@ const Dashboard = () => {
             <FiTrendingUp size={48} />
             <h3>No performance data yet</h3>
             <p>Connect your social media accounts and start posting to see analytics here.</p>
-            <button className="btn btn-secondary">
+            <Link to="/connections" className="btn btn-secondary">
               Connect Accounts
-            </button>
+            </Link>
           </div>
         </div>
 
