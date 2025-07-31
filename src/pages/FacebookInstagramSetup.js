@@ -243,13 +243,23 @@ const FacebookInstagramSetup = () => {
         </div>
       </div>
 
-      <button 
-        className="btn btn-primary btn-large"
-        onClick={() => setSetupStep('metaApp')}
-      >
-        Start Setup Process
-        <FiArrowRight />
-      </button>
+      <div className="action-buttons">
+        <button 
+          className="btn btn-primary btn-large"
+          onClick={() => setSetupStep('metaApp')}
+        >
+          Start Setup Process
+          <FiArrowRight />
+        </button>
+        
+        <button 
+          className="btn btn-success btn-large"
+          onClick={() => setSetupStep('connect')}
+        >
+          Skip to OAuth Connections
+          <FiArrowRight />
+        </button>
+      </div>
     </div>
   );
 
@@ -451,9 +461,8 @@ const FacebookInstagramSetup = () => {
         <button 
           className="btn btn-primary"
           onClick={() => setSetupStep('connect')}
-          disabled={!credentials.appId || !credentials.accessToken}
         >
-          Next: Connect Accounts
+          Skip to OAuth Connections
           <FiArrowRight />
         </button>
       </div>
