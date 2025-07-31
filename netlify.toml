@@ -11,17 +11,12 @@
 # Secrets scanning configuration
 # REACT_APP_* variables are meant to be public and embedded in the build
 [build.processing.secrets]
-  included = false
-
-# Alternative: exclude specific environment variables from secrets scanning
-[build.processing]
-  [build.processing.secrets]
-    omit_keys = [
-      "REACT_APP_FRONTEND_URL",
-      "REACT_APP_API_URL", 
-      "REACT_APP_META_APP_ID",
-      "REACT_APP_REDIRECT_URI"
-    ]
+  omit_keys = [
+    "REACT_APP_FRONTEND_URL",
+    "REACT_APP_API_URL", 
+    "REACT_APP_META_APP_ID",
+    "REACT_APP_REDIRECT_URI"
+  ]
 
 # Redirect all routes to index.html for client-side routing
 [[redirects]]
