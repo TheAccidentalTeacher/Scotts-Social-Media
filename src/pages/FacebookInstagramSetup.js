@@ -38,47 +38,113 @@ const FacebookInstagramSetup = () => {
     toast.success('Copied to clipboard!');
   };
 
+  // Handle OAuth callback on component mount
+  useEffect(() => {
+    const handleOAuthCallback = async () => {
+      try {
+        const result = metaAuthService.handleAuthCallback();
+        if (result.success) {
+          toast.success(`${result.platform} connected successfully!`);
+          await loadConnectionStatus(); // Refresh connection status
+        }
+      } catch (error) {
+        console.error('OAuth callback error:', error);
+        toast.error('Authentication failed: ' + error.message);
+      }
+    };
+
+    // Check if we're on a callback URL
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('success') || urlParams.get('error')) {
+      handleOAuthCallback();
+    } else {
+      // Load current connection status
+      loadConnectionStatus();
+    }
+  }, []);
+
+  // Load connection status from backend
+  const loadConnectionStatus = async () => {
+    try {
+      const status = await metaAuthService.getConnectionStatus();
+      
+      setConnections({
+        instagram: {
+          connected: status.instagram?.connected || false,
+          username: status.instagram?.user?.username || '',
+          followers: status.instagram?.platformData?.followers || 0
+        },
+        facebookPage: {
+          connected: status.facebook_page?.connected || false,
+          pageName: status.facebook_page?.user?.name || '',
+          followers: status.facebook_page?.platformData?.followers || 0
+        },
+        facebookGroup: {
+          connected: status.facebook_group?.connected || false,
+          groupName: status.facebook_group?.user?.name || '',
+          members: status.facebook_group?.platformData?.members || 0
+        }
+      });
+    } catch (error) {
+      console.error('Failed to load connection status:', error);
+    }
+  };
+
   const handleConnect = async (platform) => {
     setIsConnecting(true);
     try {
-      // Simulate connection process
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Mock successful connection
-      if (platform === 'instagram') {
-        setConnections(prev => ({
-          ...prev,
-          instagram: {
-            connected: true,
-            username: 'the_accidental_teacher',
-            followers: Math.floor(Math.random() * 5000) + 1000
-          }
-        }));
-      } else if (platform === 'facebookPage') {
-        setConnections(prev => ({
-          ...prev,
-          facebookPage: {
-            connected: true,
-            pageName: 'The Accidental Teacher',
-            followers: Math.floor(Math.random() * 10000) + 2000
-          }
-        }));
-      } else if (platform === 'facebookGroup') {
-        setConnections(prev => ({
-          ...prev,
-          facebookGroup: {
-            connected: true,
-            groupName: 'Teachers Supporting Teachers',
-            members: Math.floor(Math.random() * 15000) + 5000
-          }
-        }));
+      // Map frontend platform names to backend platform names
+      const platformMap = {
+        'instagram': 'instagram',
+        'facebookPage': 'facebook_page',
+        'facebookGroup': 'facebook_group'
+      };
+
+      const backendPlatform = platformMap[platform];
+      if (!backendPlatform) {
+        throw new Error('Invalid platform');
       }
+
+      // Start OAuth flow - this will redirect to Facebook
+      await metaAuthService.initiateAuth(backendPlatform);
       
-      toast.success(`${platform} connected successfully!`);
     } catch (error) {
-      toast.error(`Failed to connect ${platform}`);
-    } finally {
+      console.error('Failed to start OAuth flow:', error);
+      toast.error(`Failed to connect ${platform}: ${error.message}`);
       setIsConnecting(false);
+    }
+    // Note: setIsConnecting(false) will be called after OAuth callback
+  };
+
+  const handleDisconnect = async (platform) => {
+    try {
+      // Map frontend platform names to backend platform names
+      const platformMap = {
+        'instagram': 'instagram',
+        'facebookPage': 'facebook_page',
+        'facebookGroup': 'facebook_group'
+      };
+
+      const backendPlatform = platformMap[platform];
+      await metaAuthService.disconnect(backendPlatform);
+      
+      // Update local state
+      setConnections(prev => ({
+        ...prev,
+        [platform]: {
+          connected: false,
+          username: '',
+          pageName: '',
+          groupName: '',
+          followers: 0,
+          members: 0
+        }
+      }));
+      
+      toast.success(`${platform} disconnected successfully!`);
+    } catch (error) {
+      console.error('Failed to disconnect:', error);
+      toast.error(`Failed to disconnect ${platform}`);
     }
   };
 
