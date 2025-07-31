@@ -107,6 +107,14 @@ const AppRoutes = () => {
         }
       />
       <Route 
+        path="/facebook-instagram-setup"
+        element={
+          <Layout>
+            <FacebookInstagramSetup />
+          </Layout>
+        }
+      />
+      <Route 
         path="/settings"
         element={
           <Layout>
