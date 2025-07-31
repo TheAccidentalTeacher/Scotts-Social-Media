@@ -1,18 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   FiInstagram,
   FiFacebook,
   FiCheck,
-  FiX,
   FiExternalLink,
   FiCopy,
   FiAlertCircle,
   FiUsers,
-  FiFileText,
   FiArrowRight,
   FiRefreshCw
 } from 'react-icons/fi';
 import { toast } from 'react-toastify';
+import metaAuthService from '../services/metaAuthService';
 import './FacebookInstagramSetup.css';
 
 const FacebookInstagramSetup = () => {
