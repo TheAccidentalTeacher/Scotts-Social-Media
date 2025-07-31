@@ -8,7 +8,8 @@ import {
   FiAlertCircle,
   FiUsers,
   FiArrowRight,
-  FiRefreshCw
+  FiRefreshCw,
+  FiX
 } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 import metaAuthService from '../services/metaAuthService';
@@ -484,6 +485,16 @@ const FacebookInstagramSetup = () => {
             <div className="connection-details">
               <p><strong>Username:</strong> @{connections.instagram.username}</p>
               <p><strong>Followers:</strong> {connections.instagram.followers.toLocaleString()}</p>
+              <div className="connection-actions">
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => handleDisconnect('instagram')}
+                  disabled={isConnecting}
+                >
+                  <FiX />
+                  Disconnect Instagram
+                </button>
+              </div>
             </div>
           ) : (
             <div className="connection-actions">
@@ -528,6 +539,16 @@ const FacebookInstagramSetup = () => {
             <div className="connection-details">
               <p><strong>Page:</strong> {connections.facebookPage.pageName}</p>
               <p><strong>Followers:</strong> {connections.facebookPage.followers.toLocaleString()}</p>
+              <div className="connection-actions">
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => handleDisconnect('facebookPage')}
+                  disabled={isConnecting}
+                >
+                  <FiX />
+                  Disconnect Facebook Page
+                </button>
+              </div>
             </div>
           ) : (
             <div className="connection-actions">
@@ -572,6 +593,16 @@ const FacebookInstagramSetup = () => {
             <div className="connection-details">
               <p><strong>Group:</strong> {connections.facebookGroup.groupName}</p>
               <p><strong>Members:</strong> {connections.facebookGroup.members.toLocaleString()}</p>
+              <div className="connection-actions">
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => handleDisconnect('facebookGroup')}
+                  disabled={isConnecting}
+                >
+                  <FiX />
+                  Disconnect Facebook Group
+                </button>
+              </div>
             </div>
           ) : (
             <div className="connection-actions">

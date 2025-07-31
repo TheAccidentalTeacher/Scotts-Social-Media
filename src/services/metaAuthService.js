@@ -192,4 +192,5 @@ class MetaAuthService {
   }
 }
 
-export default new MetaAuthService();
+const metaAuthService = new MetaAuthService();
+export default metaAuthService;
